@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Document</title>
+    <style>
+        #inputDiv{
+            margin-top: 5%;
+            margin-left: 30%;
+        }
+        input[type="text"]{
+            text-align:center;
+            font-size:1.0em;
+            height:35px;
+            border-radius:4px;
+            border:1px solid #c8cccf;
+            color:#6a6f77;
+            -web-kit-appearance:none;
+            -moz-appearance: none;
+            outline:0;
+            text-decoration:none;
+            width:40%;
+            display: inline-block;
+        }
+        input[type="text"]:focus{
+
+            border:1px solid #ff7496;
+        }
+
+        #inputDiv #btn{
+
+            background: rgb(0, 132, 255);
+            background-origin: padding-box;
+            border: 1px solid rgb(0,132,255);
+            color: white;
+            width: 15%;
+            height: 35px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+/*
+        #temPicture{
+            margin-left: 5%;
+            margin-top: 5%;
+            width: 370px;
+            height: 300px;
+            border: 1px solid red;
+            display: inline-block;
+        }
+        .avatar{
+            width: 32%;
+            height: 48%;
+            margin: 0px;
+            padding: 0px;
+        }
+*/
+        #wrap{
+            width: 40%;
+
+            margin: 0 auto;
+            margin-top: 5%;
+        }
+        #wrap img{
+            margin-left: 20%;
+        }
+    </style>
+    </head>
+<body>
+    <div id="inputDiv">
+        <input type="text" placeholder="请输入电影名称:" name = 'name' id="name">
+        <input type="button" value="搜索" id = "btn">
+    </div>
+
+    <!--
+    <div id="temPicture">
+        <img src="abc.jpg" alt="" class="avatar">
+        <img src="abc.jpg" alt="" class="avatar">
+        <img src="abc.jpg" alt="" class="avatar">
+        <img src="abc.jpg" alt="" class="avatar">
+        <img src="abc.jpg" alt="" class="avatar">
+        <img src="abc.jpg" alt="" class="avatar">
+    </div>
+-->
+
+    <div id="wrap">
+        <img src="{{url_for('static', filename='templatesPicture/abc.jpg')}}" alt="" class="avatar" id="result">
+    </div>
+    </body>
+</html>
+<script>
+    var oBtn = document.getElementById("btn");
+    var inputname = document.getElementById("name");
+    oBtn.onclick = function(){
+        this.style.background = "gray";
+        this.disabled = true;
+        var val = inputname.value;
+        console.log(val);
+        var request = new XMLHttpRequest();
+        var wrap = document.getElementById("wrap");
+        request.open("get", "/getPicture/?name="+val, true);
+        request.send();
+        request.onreadystatechange = function(){
+            if(this.readyState == 4 &&this.status == 200){
+                var moviename = this.responseText;
+                console.log(moviename);
+                //根据obj的内容进行界面的创建
+                var img = document.getElementById("result");
+                img.src = "./static/images/"+moviename+".png";
+                console.log(img.src);
+                oBtn.style.background = 'rgb(0, 132, 255)';
+                oBtn.disabled = false;
+            }
+        }
+    }
+</script>
